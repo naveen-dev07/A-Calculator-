@@ -3,7 +3,6 @@ const buttons = document.querySelectorAll("button");
 
 const operators = ["+", "-", "*", "/"];
 
-// 🔹 Main handler (button + keyboard dono yahin se)
 function handleInput(value) {
 
   // CLEAR
@@ -22,7 +21,7 @@ function handleInput(value) {
     return;
   }
 
-  // PERCENT (50 → 0.5)
+  // PERCENT
   if (value === "%") {
     if (display.value) {
       display.value = Number(display.value) / 100;
@@ -30,7 +29,17 @@ function handleInput(value) {
     return;
   }
 
-  // DOT (last number check)
+  // PLUS / MINUS  ✅ ADDED
+  if (value === "+/-") {
+    if (display.value) {
+      display.value = display.value.startsWith("-")
+        ? display.value.slice(1)
+        : "-" + display.value;
+    }
+    return;
+  }
+
+  // DOT
   if (value === ".") {
     let parts = display.value.split(/[\+\-\*\/]/);
     let lastNumber = parts[parts.length - 1];
@@ -40,7 +49,7 @@ function handleInput(value) {
     return;
   }
 
-  // OPERATOR (no double operator)
+  // OPERATORS
   if (operators.includes(value)) {
     let lastChar = display.value.slice(-1);
     if (display.value !== "" && !operators.includes(lastChar)) {
@@ -49,18 +58,18 @@ function handleInput(value) {
     return;
   }
 
-  // NUMBER
+  // NUMBERS
   display.value += value;
 }
 
-// 🔹 Button click
+// BUTTON CLICK
 buttons.forEach((btn) => {
   btn.addEventListener("click", () => {
     handleInput(btn.innerText.trim());
   });
 });
 
-// 🔹 Keyboard support
+// KEYBOARD
 document.addEventListener("keydown", (e) => {
 
   if (!isNaN(e.key)) {
@@ -81,5 +90,10 @@ document.addEventListener("keydown", (e) => {
 
   if (e.key === ".") {
     handleInput(".");
+  }
+
+  // SIGN TOGGLE (press N) ✅ ADDED
+  if (e.key === "n") {
+    handleInput("+/-");
   }
 });
