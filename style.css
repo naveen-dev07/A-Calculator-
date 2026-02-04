@@ -1,0 +1,114 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: monospace;
+    }
+
+body {
+  
+    height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+
+    /* Cyber image + dark bluish overlay */
+    background:
+      linear-gradient(
+        rgba(15, 26, 47, 0.85),
+        rgba(15, 26, 47, 0.85)
+      ),
+      url("bg4.jpg");
+
+    background-size:contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+   
+
+
+
+.calculator {
+    width: min(350,100%);
+    background: rgba(255, 255, 255, 0.05); 
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur( 20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px; 
+    padding: 20px;
+    box-shadow: 0px 20px 50px rgba(0,0,0,0.6);
+}
+
+#display {
+    width: calc(100% + 40px);
+    height: 120px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    font-size: 45px;
+    text-align: right;
+    padding: 20px;
+    margin-bottom: 10px;
+    outline: none; 
+    margin-left: -20px;    
+    margin-right: -20px;      
+    margin-top: -20px;
+    /* font-family: monospace; */
+    transition: all 0.3s ease-in-out;
+}
+
+#display:focus{
+    color: #0f0;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.cal {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 10px;
+}
+
+button {
+    height: 65px;
+    width: 65px; 
+    border-radius: 50%;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease; 
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+button:active{
+    transform: scale(0.92);
+    filter: brightness(0.8);
+}
+
+#equal {
+    grid-column: span 2;
+    width: 100%; 
+    border-radius: 35px;
+    background-color: rgba(46, 125, 50, 0.8); 
+}
+
+#special { background-color: rgba(211, 47, 47, 0.8); } 
+.opr { background-color: rgba(245, 124, 0, 0.8); }  
+
+
+@media (max-width : 768px){
+body {
+    background-size: cover;
+}
+}
