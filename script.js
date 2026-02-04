@@ -1,85 +1,19 @@
-let display = document.querySelector("#display");
-let button = document.querySelectorAll("button");
-const operators = ["+", "-", "*", "/" ,"1","2","3","4","5","6","7","9","0"];
+const display = document.querySelector("#display");
+const buttons = document.querySelectorAll("button");
 
-button.forEach((btn) => {
+const operators = ["+", "-", "*", "/"];
 
-  btn.addEventListener("click", () => {
-    let value = btn.innerText.trim();
+// 🔹 Main handler (button + keyboard dono yahin se)
+function handleInput(value) {
 
-    if (value === "C") {
-      display.value = "";
-    } 
-    else if (value === "=") {
-      try {
-        display.value = eval(display.value);
-      } catch {
-        display.value = "Error";
-      }
-    } 
-    else if (value === ".") {
-      if (!display.value.includes(".")) {
-        display.value += ".";
-      }
-    } 
-    else if (value === "+/-") {
-      if (display.value) {
-        display.value = display.value.startsWith("-")
-          ? display.value.slice(1)
-          : "-" + display.value;
-      }
-    } 
-    else if (value === "%") {
-      let sec = display.value;
-       
-         
-        if (sec.includes("%")) {
-          let parts = sec.split("%");
-        if (parts.length === 2 && parts[0] !=="" && parts[1] !== "") {
-          let total = Number(parts[0]);
-          let part = Number(parts[1]);
-        if (total !== 0 ) {
-          let result = (part/total)*100
-          display.value = result
-        }else{
-          display.value = "error"
-        }
-      }
-      
-        
-      }
-    }
-       else if (operators.includes(value)) {
-        let lastChar = display.value.slice(-1);
-        if (!operators.includes(lastChar)) {
-          display.value += value;
-        } 
-        } 
-        else {
-          display.value += value;
-        }
-      
-    
-  });
-});
-document.addEventListener("keydown", (e) => {
- 
-  if (!isNaN(e.key)) {
-    display.value += e.key;
+  // CLEAR
+  if (value === "C") {
+    display.value = "";
     return;
   }
 
- 
-  if (operators.includes(e.key)) {
-    let lastChar = display.value.slice(-1);
-    if (!operators.includes(lastChar)) {
-      display.value += e.key;
-    }
-    return;
-  }
-
- 
-  if (e.key === "Enter") {
+  // EQUAL
+  if (value === "=") {
     try {
       display.value = eval(display.value);
     } catch {
@@ -88,16 +22,64 @@ document.addEventListener("keydown", (e) => {
     return;
   }
 
-
-  if (e.key === "Backspace") {
-    display.value = display.value.slice(0, -1);
+  // PERCENT (50 → 0.5)
+  if (value === "%") {
+    if (display.value) {
+      display.value = Number(display.value) / 100;
+    }
     return;
   }
 
-
-  if (e.key === ".") {
-    if (!display.value.includes(".")) {
+  // DOT (last number check)
+  if (value === ".") {
+    let parts = display.value.split(/[\+\-\*\/]/);
+    let lastNumber = parts[parts.length - 1];
+    if (!lastNumber.includes(".")) {
       display.value += ".";
     }
+    return;
+  }
+
+  // OPERATOR (no double operator)
+  if (operators.includes(value)) {
+    let lastChar = display.value.slice(-1);
+    if (display.value !== "" && !operators.includes(lastChar)) {
+      display.value += value;
+    }
+    return;
+  }
+
+  // NUMBER
+  display.value += value;
+}
+
+// 🔹 Button click
+buttons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    handleInput(btn.innerText.trim());
+  });
+});
+
+// 🔹 Keyboard support
+document.addEventListener("keydown", (e) => {
+
+  if (!isNaN(e.key)) {
+    handleInput(e.key);
+  }
+
+  if (operators.includes(e.key)) {
+    handleInput(e.key);
+  }
+
+  if (e.key === "Enter") {
+    handleInput("=");
+  }
+
+  if (e.key === "Backspace") {
+    display.value = display.value.slice(0, -1);
+  }
+
+  if (e.key === ".") {
+    handleInput(".");
   }
 });
